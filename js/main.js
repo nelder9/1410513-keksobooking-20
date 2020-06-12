@@ -26,26 +26,27 @@ var getFeatures = function () {
 };
 
 var renderMock = function () {
-  var randomMock = {};
-  randomMock = {author: {
+  var randomLocationX = getRandomInteger(1, 1170);
+  var randomLocationY = getRandomInteger(130, 630);
+  var randomMock = {author: {
     avatar: 'img/avatars/user' + '0' + getRandomInteger(1, 8) + '.png'
   },
   offer: {
-    title: 'Рандомный текст', // заголовок предложения
-    address: '600, 350', // строка, адрес предложения. Для простоты пусть пока представляет собой запись вида "{{location.x}}, {{location.y}}", например, "600, 350"
-    price: getRandomInteger(10000, 100000), // число, стоимость
-    type: getType(), // строка с одним из четырёх фиксированных значений: palace, flat, house или bungalo
-    rooms: getRandomInteger(1, 3), // число, количество комнат
-    guests: getRandomInteger(0, 10), // число, количество гостей, которое можно разместить
-    checkin: '' + getRandomInteger(12, 14) + ':00', // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00,
-    checkout: '' + getRandomInteger(12, 14) + ':00', // строка с одним из трёх фиксированных значений: 12:00, 13:00 или 14:00
-    features: getFeatures(), // массив строк случайной длины из ниже предложенных: "wifi", "dishwasher", "parking", "washer", "elevator", "conditioner",
-    description: 'Строка с описанием', // строка с описанием,
-    photos: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'] // массив строк случайной длины, содержащий адреса фотографий "http://o0.github.io/assets/images/tokyo/hotel1.jpg", "http://o0.github.io/assets/images/tokyo/hotel2.jpg", "http://o0.github.io/assets/images/tokyo/hotel3.jpg"
+    title: 'Рандомный текст',
+    address: '' + randomLocationX + '' + ', ' + randomLocationY + '',
+    price: getRandomInteger(10000, 100000),
+    type: getType(),
+    rooms: getRandomInteger(1, 3),
+    guests: getRandomInteger(0, 10),
+    checkin: '' + getRandomInteger(12, 14) + ':00',
+    checkout: '' + getRandomInteger(12, 14) + ':00',
+    features: getFeatures(),
+    description: 'Строка с описанием',
+    photos: ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
   },
   location: {
-    x: getRandomInteger(1, 1170),
-    y: getRandomInteger(130, 630)
+    x: randomLocationX,
+    y: randomLocationY
   }
   };
   return randomMock;
