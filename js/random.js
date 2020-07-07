@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var mock = [];
+
   function getRandomInteger(min, max) {
     var rand = min - 0.5 + Math.random() * (max - min + 1);
     return Math.round(rand);
@@ -64,9 +65,9 @@
     return ad;
   };
 
-  var fragment = document.createDocumentFragment();
+  // var fragment = document.createDocumentFragment();
 
-  window.random = {
+  /*  window.random = {
     getArrayOfMocks: function () {
       for (var i = 0; i < 8; i++) {
         mock.push(renderMock());
@@ -76,7 +77,7 @@
         fragment.appendChild(renderAd(j));
         window.map.appendChild(fragment);
       }
-    }};
+    }
+  }; */
 
 })();
-
