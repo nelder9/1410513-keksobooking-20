@@ -6,12 +6,15 @@
 
   var startFilter = function () {
     var newPins = document.querySelectorAll('.map__pin');
+
     newPins.forEach(function (element) {
-      element.remove();
+      if (element.className === 'map__pin') {
+        element.remove();
+      }
     });
 
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < window.filteredPins.length; j++) {
+    for (var j = 0; j < 5; j++) {
       fragment.appendChild(window.renderNewAd(j));
       window.map.appendChild(fragment);
     }
