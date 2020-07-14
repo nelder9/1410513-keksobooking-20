@@ -1,13 +1,22 @@
 'use strict';
 (function () {
+  var onPopupEscPress = function (evt) {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
+      window.closePopup();
+    }
+  };
   window.closePopup = function () {
+
     var popup = document.querySelector('.popup');
     popup.remove();
     window.popupIsOpened = false;
     window.openedPin.classList.remove('map__pin--main');
+    document.removeEventListener('keydown', onPopupEscPress);
   };
 
   window.startCard = function (index) {
+    window.popupIsOpened = false;
     var discTemplate = document.querySelector('#card')
       .content
       .querySelector('.popup');
@@ -30,10 +39,11 @@
     disc.children[6].textContent = window.mock[index].offer.rooms + ' комнаты для ' + window.mock[index].offer.guests + ' гостей';
     disc.children[7].textContent = 'Заезд после ' + window.mock[index].offer.checkin + ', выезд до ' + window.mock[index].offer.checkout;
     disc.children[9].textContent = window.mock[index].offer.description;
-    disc.children[10].insertAdjacentHTML('afterbegin', '<img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img> <img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>');
-    disc.children[10].children[0].src = window.mock[index].offer.photos[0];
-    disc.children[10].children[1].src = window.mock[index].offer.photos[1];
-    disc.children[10].children[2].src = window.mock[index].offer.photos[2];
+
+    for (var i = 0; i < window.mock[index].offer.photos.length; i++) {
+      disc.children[10].insertAdjacentHTML('beforeend', '<img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья"></img>');
+      disc.children[10].children[i].src = window.mock[index].offer.photos[i];
+    }
 
     window.map.insertBefore(disc, window.map.children[1]);
 
@@ -41,22 +51,16 @@
 
     popupClose.addEventListener('click', function () {
       window.closePopup();
-      document.addEventListener('keydown', onPopupEscPress);
     });
 
-    var onPopupEscPress = function (evt) {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        window.closePopup();
-      }
-    };
+    document.addEventListener('keydown', onPopupEscPress);
+
 
     popupClose.addEventListener('keydown', function (evt) {
       if (evt.key === 'Enter') {
         window.closePopup();
       }
     });
-
   };
 
 })();

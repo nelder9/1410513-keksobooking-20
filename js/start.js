@@ -3,7 +3,7 @@
   window.mock = [];
   window.filteredPins = [];
   window.popupIsOpened = false;
-  var mapPins = document.querySelector('.map');
+  var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adTemplate = document.querySelector('#pin')
     .content
@@ -16,6 +16,7 @@
     ad.children[0].src = window.mock[j].author.avatar;
     ad.children[0].alt = window.mock[j].offer.title;
     return ad;
+
   };
 
   window.renderNewAd = function (j) {
@@ -63,25 +64,36 @@
 
       function startPopup(evt) {
 
-        if (window.popupIsOpened) {
+        if (window.popupIsOpened && evt.path[1].className === 'map__pin') {
+          window.closePopup();
+        }
+        if (window.popupIsOpened && evt.target.className === 'map__pin') {
           window.closePopup();
         }
 
-        if (evt.path[1].type === 'button' && window.popupIsOpened === false) {
+        if (evt.path[1].className === 'map__pin' && window.popupIsOpened === false) {
           window.startCard(evt.target.getAttribute('data-id'));
           window.popupIsOpened = true;
           window.openedPin = evt.path[1];
           window.openedPin.classList.add('map__pin--main');
         }
+        if (evt.target.className === 'map__pin' && window.popupIsOpened === false) {
+          window.startCard(evt.target.children[0].getAttribute('data-id'));
+          window.popupIsOpened = true;
+          window.openedPin = evt.target;
+          window.openedPin.classList.add('map__pin--main');
+        }
       }
-      mapPins.addEventListener('click', startPopup);
-      mapPins.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Enter') {
+
+      map.addEventListener('click', startPopup);
+      map.addEventListener('keydown', function (evt) {
+        if (evt.key === 'Enter' && evt.path[1].children[0].className === 'map__pins') {
           startPopup();
         }
       });
 
     }, function () {});
+
     openStart.removeEventListener('click', start);
     openStart.removeEventListener('keydown', startEnter);
     window.form.validRoom();

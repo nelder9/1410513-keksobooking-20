@@ -8,11 +8,10 @@
     var newPins = document.querySelectorAll('.map__pin');
 
     newPins.forEach(function (element) {
-      if (element.className === 'map__pin') {
+      if (element.className === 'map__pin' || element.className === 'map__pin map__pin--main') {
         element.remove();
       }
     });
-
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < 5; j++) {
       fragment.appendChild(window.renderNewAd(j));
@@ -21,6 +20,7 @@
     for (var i = 0; i < window.mapFilters.children.length; i++) {
       window.mapFilters.children[i].removeAttribute('disabled', true);
     }
+
   };
 
   window.houseFilter.addEventListener('change', function () {
