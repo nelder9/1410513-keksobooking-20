@@ -3,6 +3,7 @@
   window.mock = [];
   window.filteredPins = [];
   window.popupIsOpened = false;
+  window.mainPin = document.querySelector('.map__pin--main');
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
   var adTemplate = document.querySelector('#pin')
@@ -31,7 +32,6 @@
   var getStart = function () {
     window.map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-
     for (var i = 0; i < window.mapFilters.children.length; i++) {
       window.mapFilters.children[i].removeAttribute('disabled', true);
     }
@@ -43,11 +43,37 @@
     submitForm.addEventListener('mousedown', function () {
       adForm.children[2].removeAttribute('disabled', true);
     });
-
   };
-  var openStart = document.querySelector('.map__pin--main');
 
-  var start = function () {
+  window.startPopup = function (evt) {
+    if (window.popupIsOpened && evt.path[1].className === 'map__pin') {
+      window.closePopup();
+    }
+    if (window.popupIsOpened && evt.target.className === 'map__pin') {
+      window.closePopup();
+    }
+    if (evt.path[1].className === 'map__pin' && window.popupIsOpened === false) {
+      window.startCard(evt.target.getAttribute('data-id'));
+      window.popupIsOpened = true;
+      window.openedPin = evt.path[1];
+      window.openedPin.classList.add('map__pin--active');
+    }
+    if (evt.target.className === 'map__pin' && window.popupIsOpened === false) {
+      window.startCard(evt.target.children[0].getAttribute('data-id'));
+      window.popupIsOpened = true;
+      window.openedPin = evt.target;
+      window.openedPin.classList.add('map__pin--active');
+    }
+  };
+
+  map.addEventListener('click', window.startPopup);
+  map.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter' && evt.path[1].children[0].className === 'map__pins') {
+      window.startPopup();
+    }
+  });
+
+  window.start = function () {
     getStart();
     window.backend.load(function (data) {
 
@@ -62,52 +88,22 @@
         window.map.appendChild(fragment);
       }
 
-      function startPopup(evt) {
-
-        if (window.popupIsOpened && evt.path[1].className === 'map__pin') {
-          window.closePopup();
-        }
-        if (window.popupIsOpened && evt.target.className === 'map__pin') {
-          window.closePopup();
-        }
-
-        if (evt.path[1].className === 'map__pin' && window.popupIsOpened === false) {
-          window.startCard(evt.target.getAttribute('data-id'));
-          window.popupIsOpened = true;
-          window.openedPin = evt.path[1];
-          window.openedPin.classList.add('map__pin--main');
-        }
-        if (evt.target.className === 'map__pin' && window.popupIsOpened === false) {
-          window.startCard(evt.target.children[0].getAttribute('data-id'));
-          window.popupIsOpened = true;
-          window.openedPin = evt.target;
-          window.openedPin.classList.add('map__pin--main');
-        }
-      }
-
-      map.addEventListener('click', startPopup);
-      map.addEventListener('keydown', function (evt) {
-        if (evt.key === 'Enter' && evt.path[1].children[0].className === 'map__pins') {
-          startPopup();
-        }
-      });
-
     }, function () {});
 
-    openStart.removeEventListener('click', start);
-    openStart.removeEventListener('keydown', startEnter);
+    window.mainPin.removeEventListener('click', window.start);
+    window.mainPin.removeEventListener('keydown', window.startEnter);
     window.form.validRoom();
 
   };
 
-  var startEnter = function (evt) {
+  window.startEnter = function (evt) {
     if (evt.key === 'Enter') {
-      start();
+      window.start();
     }
   };
 
-  openStart.addEventListener('click', start);
+  window.mainPin.addEventListener('click', window.start);
 
-  openStart.addEventListener('keydown', startEnter);
+  window.mainPin.addEventListener('keydown', window.startEnter);
 
 })();

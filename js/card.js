@@ -11,7 +11,7 @@
     var popup = document.querySelector('.popup');
     popup.remove();
     window.popupIsOpened = false;
-    window.openedPin.classList.remove('map__pin--main');
+    window.openedPin.classList.remove('map__pin--active');
     document.removeEventListener('keydown', onPopupEscPress);
   };
 

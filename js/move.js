@@ -1,10 +1,10 @@
 'use strict';
 (function () {
-  var mainPin = document.querySelector('.map__pin--main');
-  var address = document.querySelector('#address');
-  address.value = (parseInt(mainPin.style.left, 10) + 32) + ', ' + (parseInt(mainPin.style.top, 10) + 32);
 
-  mainPin.addEventListener('mousedown', function (evt) {
+  window.address = document.querySelector('#address');
+  window.address.value = (parseInt(window.mainPin.style.left, 10) + 31) + ', ' + (parseInt(window.mainPin.style.top, 10) + 70);
+
+  window.mainPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -12,12 +12,8 @@
       y: evt.clientY
     };
 
-    var dragged = false;
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-
-      dragged = true;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -29,24 +25,24 @@
         y: moveEvt.clientY
       };
 
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      if (((window.mainPin.offsetTop - shift.y) + 70) < 130 || ((window.mainPin.offsetTop - shift.y) + 70) > 630) {
+        return;
+      }
+      if (((window.mainPin.offsetLeft - shift.x) + 31) < 0 || ((window.mainPin.offsetLeft - shift.x) + 31) > 1200) {
+        return;
+      }
+
+      window.mainPin.style.top = (window.mainPin.offsetTop - shift.y) + 'px';
+      window.mainPin.style.left = (window.mainPin.offsetLeft - shift.x) + 'px';
 
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      address.value = (parseInt(mainPin.style.left, 10) + 31) + ', ' + (parseInt(mainPin.style.top, 10) + 70);
+      window.address.value = (parseInt(window.mainPin.style.left, 10) + 31) + ', ' + (parseInt(window.mainPin.style.top, 10) + 70);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
-      if (dragged) {
-        var onClickPreventDefault = function (clickEvt) {
-          clickEvt.preventDefault();
-          mainPin.removeEventListener('click', onClickPreventDefault);
-        };
-        mainPin.addEventListener('click', onClickPreventDefault);
-      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
