@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-
   window.address = document.querySelector('#address');
   window.address.value = (parseInt(window.mainPin.style.left, 10) + 31) + ', ' + (parseInt(window.mainPin.style.top, 10) + 70);
 
