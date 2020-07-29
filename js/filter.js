@@ -81,7 +81,7 @@
 
   var onFilterChange = function () {
 
-    window.filteredPins = window.mock.filter(function (filtredData) {
+    window.filteredPins = window.mocks.filter(function (filtredData) {
       var adType = chooseTypes(filtredData);
       var adRooms = choosePrices(filtredData);
       var adPrice = chooseRooms(filtredData);

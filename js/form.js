@@ -8,7 +8,7 @@
   var price = document.querySelector('#price');
 
   window.form = {
-    validRoom: function () {
+    checkAccommodation: function () {
       if (roomNumber.value === '100' && capacity.value > '0') {
         roomNumber.setCustomValidity('Не верно');
       } else if (roomNumber.value >= capacity.value && capacity.value !== '0') {
@@ -37,9 +37,9 @@
     }
   });
 
-  roomNumber.addEventListener('change', window.form.validRoom);
+  roomNumber.addEventListener('change', window.form.checkAccommodation);
 
-  capacity.addEventListener('change', window.form.validRoom);
+  capacity.addEventListener('change', window.form.checkAccommodation);
 
   timeIn.addEventListener('change', function () {
     if (timeIn.children[0].selected) {

@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  window.mock = [];
+  window.mocks = [];
   window.filteredPins = [];
   window.popupIsOpened = false;
   window.mainPin = document.querySelector('.map__pin--main');
@@ -12,10 +12,11 @@
 
   window.renderAd = function (j) {
     var ad = adTemplate.cloneNode(true);
-    ad.style = 'left: ' + window.mock[j].location.x + 'px; top:  ' + window.mock[j].location.y + 'px;';
-    ad.children[0].setAttribute('data-id', window.mock[j].id);
-    ad.children[0].src = window.mock[j].author.avatar;
-    ad.children[0].alt = window.mock[j].offer.title;
+    ad.style = 'left: ' + window.mocks[j].location.x + 'px; top:  ' + window.mocks[j].location.y + 'px;';
+    ad.children[0].setAttribute('data-id', window.mocks[j].id);
+    ad.setAttribute('data-id', window.mocks[j].id);
+    ad.children[0].src = window.mocks[j].author.avatar;
+    ad.children[0].alt = window.mocks[j].offer.title;
     return ad;
 
   };
@@ -46,30 +47,39 @@
   };
 
   window.startPopup = function (evt) {
-    if (window.popupIsOpened && evt.path[1].className === 'map__pin') {
+    if (window.popupIsOpened && evt.target.hasAttribute('data-id')) {
       window.closePopup();
     }
-    if (window.popupIsOpened && evt.target.className === 'map__pin') {
+    if (window.popupIsOpened && evt.target.hasAttribute('data-id')) {
       window.closePopup();
     }
-    if (evt.path[1].className === 'map__pin' && window.popupIsOpened === false) {
+    if (evt.target.hasAttribute('data-id') && window.popupIsOpened === false) {
       window.startCard(evt.target.getAttribute('data-id'));
       window.popupIsOpened = true;
-      window.openedPin = evt.path[1];
-      window.openedPin.classList.add('map__pin--active');
-    }
-    if (evt.target.className === 'map__pin' && window.popupIsOpened === false) {
-      window.startCard(evt.target.children[0].getAttribute('data-id'));
-      window.popupIsOpened = true;
       window.openedPin = evt.target;
+      window.buttons = document.querySelectorAll('button');
+      window.buttons.forEach(function (element) {
+        if (element.getAttribute('data-id') === evt.target.getAttribute('data-id')) {
+          window.openedPin = element;
+        }
+      });
       window.openedPin.classList.add('map__pin--active');
     }
   };
 
   map.addEventListener('click', window.startPopup);
   map.addEventListener('keydown', function (evt) {
-    if (evt.key === 'Enter' && evt.path[1].children[0].className === 'map__pins') {
-      window.startPopup();
+    if (evt.key === 'Enter' && evt.target.className === 'map__pin') {
+      window.startCard(evt.target.children[0].getAttribute('data-id'));
+      window.popupIsOpened = true;
+      window.openedPin = evt.target;
+      window.buttons = document.querySelectorAll('button');
+      window.buttons.forEach(function (element) {
+        if (element.getAttribute('data-id') === evt.target.getAttribute('data-id')) {
+          window.openedPin = element;
+        }
+      });
+      window.openedPin.classList.add('map__pin--active');
     }
   });
 
@@ -80,8 +90,8 @@
       var fragment = document.createDocumentFragment();
 
       for (var i = 0; i < data.length; i++) {
-        window.mock.push(data[i]);
-        window.mock[i].id = i;
+        window.mocks.push(data[i]);
+        window.mocks[i].id = i;
       }
       for (var j = 0; j < 5; j++) {
         fragment.appendChild(window.renderAd(j));
@@ -92,7 +102,7 @@
 
     window.mainPin.removeEventListener('click', window.start);
     window.mainPin.removeEventListener('keydown', window.startEnter);
-    window.form.validRoom();
+    window.form.checkAccommodation();
 
   };
 

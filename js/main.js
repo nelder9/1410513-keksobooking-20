@@ -36,7 +36,7 @@
     if (window.popupIsOpened) {
       window.closePopup();
     }
-    window.mock = [];
+    window.mocks = [];
     window.filteredPins = [];
     adForm.reset();
     mapFilters.reset();
