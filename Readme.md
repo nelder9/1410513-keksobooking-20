@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Артем Журавлев](https://up.htmlacademy.ru/javascript/20/user/1410513).
-* Наставник: Артем Зрилов, (https://htmlacademy.ru/profile/id1045563).
+* Наставник: [Артем Зрилов](https://htmlacademy.ru/profile/id1045563).
 
 ---
 
