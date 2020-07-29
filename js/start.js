@@ -50,9 +50,6 @@
     if (window.popupIsOpened && evt.target.hasAttribute('data-id')) {
       window.closePopup();
     }
-    if (window.popupIsOpened && evt.target.hasAttribute('data-id')) {
-      window.closePopup();
-    }
     if (evt.target.hasAttribute('data-id') && window.popupIsOpened === false) {
       window.startCard(evt.target.getAttribute('data-id'));
       window.popupIsOpened = true;
@@ -69,17 +66,22 @@
 
   map.addEventListener('click', window.startPopup);
   map.addEventListener('keydown', function (evt) {
+
     if (evt.key === 'Enter' && evt.target.className === 'map__pin') {
-      window.startCard(evt.target.children[0].getAttribute('data-id'));
-      window.popupIsOpened = true;
-      window.openedPin = evt.target;
-      window.buttons = document.querySelectorAll('button');
-      window.buttons.forEach(function (element) {
-        if (element.getAttribute('data-id') === evt.target.getAttribute('data-id')) {
-          window.openedPin = element;
-        }
-      });
-      window.openedPin.classList.add('map__pin--active');
+      if (window.popupIsOpened && evt.target.hasAttribute('data-id')) {
+        window.closePopup();
+      } else {
+        window.startCard(evt.target.children[0].getAttribute('data-id'));
+        window.popupIsOpened = true;
+        window.openedPin = evt.target;
+        window.buttons = document.querySelectorAll('button');
+        window.buttons.forEach(function (element) {
+          if (element.getAttribute('data-id') === evt.target.getAttribute('data-id')) {
+            window.openedPin = element;
+          }
+        });
+        window.openedPin.classList.add('map__pin--active');
+      }
     }
   });
 
